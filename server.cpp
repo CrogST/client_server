@@ -50,7 +50,7 @@ void server::run() {
     listen(sockfd, 5);
 
     std::cout << "server run" << std::endl;
-    while(active)
+    while(true)
     {
         // accept connection (block wait for connection)
         LOG(std::cout << __FUNCTION__ << ": accept (wait for connection)" << std::endl)
@@ -66,17 +66,10 @@ void server::run() {
         std::thread c(&server::handle_client, this, newsockfd, msg_id);
         c.detach();
     }
-
-    //wait for all client threads
-    LOG(std::cout << __FUNCTION__ << ": wait for client threads" << std::endl)
-    std::unique_lock lock(m_clients);
-    LOG(std::cout << __FUNCTION__ << ": exit" << std::endl)
     close(sockfd);
 }
 
 void server::handle_client(int newsockfd, unsigned msg_id) {
-    std::shared_lock l(m_clients);
-
     //read
     LOG(std::cout << __FUNCTION__ << " " << msg_id << ": read (wait for data)" << std::endl)
     std::string buffer(256, '\0');

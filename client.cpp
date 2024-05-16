@@ -34,7 +34,7 @@ void client_t::run()
 {
     bool first = true;
     std::cout << "client " << name << " run" << std::endl;
-    while (active)
+    while (true)
     {
         // wait
         if(!first) std::this_thread::sleep_for(std::chrono::seconds(timeout));

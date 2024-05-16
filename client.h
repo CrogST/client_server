@@ -6,7 +6,6 @@ class client_t
   unsigned timeout;
   const char *name;
   unsigned port;
-  bool active = true;
   
   bool create(int & sockfd);
   bool connect(int sockfd);
@@ -17,5 +16,4 @@ class client_t
 public:
   client_t(const char *hostname, int portno, unsigned sec);
   void run();
-  void exit() { active = false; }
 };

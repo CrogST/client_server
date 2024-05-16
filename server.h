@@ -25,13 +25,10 @@ public:
     server(unsigned port);
     bool init();
     void run();
-    void exit() { active = false; }
 private:
-    bool active = true;
     unsigned portno;
     int sockfd = -1;
 
-    std::shared_mutex m_clients;
     log_handler log;
 
     void handle_client(int newsockfd, unsigned id);
