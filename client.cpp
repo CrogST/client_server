@@ -42,12 +42,11 @@ void client_t::run()
 
         int sockfd = 0;
         if(!create(sockfd)) {
-            error("ERROR opening socket");
+            std::cerr << "create socket failed" << std::endl;
             continue;
         }
-
         if (!connect(sockfd)) {
-            error("ERROR connect");
+            std::cerr << "connect failed" << std::endl;
             continue;
         }
         if (!write(sockfd)) {
@@ -60,7 +59,11 @@ void client_t::run()
 bool client_t::create(int & sockfd) {
     LOG(std::cout << __FUNCTION__ << ": open socket" << std::endl)
     sockfd = socket(AF_INET, SOCK_STREAM, 0);
-    return sockfd >= 0;
+    bool res = sockfd >= 0;
+    if(!res) {
+        error("ERROR opening socket");
+    }
+    return res;
 }
 
 bool client_t::connect(int sockfd)
@@ -70,7 +73,7 @@ bool client_t::connect(int sockfd)
     hostent *server = gethostbyname("localhost");
     if (server == NULL)
     {
-        fprintf(stderr, "ERROR, no such host\n");
+        error("ERROR, no such host");
         ::exit(0);
     }
     sockaddr_in serv_addr;
